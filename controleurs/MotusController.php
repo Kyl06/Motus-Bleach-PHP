@@ -16,7 +16,6 @@ class MotusController
         }
     }
 
-    /* ========= PAGES STATIQUES / NAVIGATION ========= */
 
     // Page d'accueil avec choix du pseudo + difficulté
     public function accueil()
@@ -48,11 +47,10 @@ class MotusController
         include 'vues/scores.php';
     }
 
-    /* ========= LOGIQUE PRINCIPALE DU JEU ========= */
 
     public function jouer()
     {
-        /* ---- 1. DÉMARRAGE D'UNE NOUVELLE PARTIE ---- */
+        //1. DÉMARRAGE D'UNE NOUVELLE PARTIE
         if (isset($_POST['niveau']) && isset($_POST['pseudo'])) {
 
             // Enregistre le pseudo et le niveau choisis
@@ -77,41 +75,41 @@ class MotusController
             $info = $this->model->getMot($_SESSION['niveau']);
 
             // Initialisation complète de l'état de la partie
-            $_SESSION['mot_secret']          = $info['mot'];
-            $_SESSION['type_mot_secret']     = $info['type'];
-            $_SESSION['essais']              = [];
-            $_SESSION['victoire']            = false;
-            $_SESSION['nb_essais']           = 0;      // "unités" d'essais : frappes + indices
-            $_SESSION['score_nul']           = false;  // passe à true si dictionnaire utilisé
+            $_SESSION['mot_secret'] = $info['mot'];
+            $_SESSION['type_mot_secret'] = $info['type'];
+            $_SESSION['essais'] = [];
+            $_SESSION['victoire'] = false;
+            $_SESSION['nb_essais'] = 0;// "unités" d'essais : frappes + indices
+            $_SESSION['score_nul'] = false;// passe à true si dictionnaire utilisé
             $_SESSION['proposition_clavier'] = '';
-            $_SESSION['clavier']             = array_fill_keys(range('A', 'Z'), 'inconnu');
-            $_SESSION['indices_reveles']     = [0];    // première lettre révélée
+            $_SESSION['clavier'] = array_fill_keys(range('A', 'Z'), 'inconnu');
+            $_SESSION['indices_reveles'] = [0];// première lettre révélée
             $_SESSION['indice_type_utilise'] = false;
-            $_SESSION['antiseche_active']    = false;
+            $_SESSION['antiseche_active'] = false;
 
             // Redirection pour éviter le rechargement de formulaire
             header('Location: index.php?page=jouer');
             exit;
         }
 
-        /* ---- 2. SÉCURITÉ : AUCUN MOT EN SESSION => RETOUR ACCUEIL ---- */
+        //2. SÉCURITÉ : AUCUN MOT EN SESSION => RETOUR ACCUEIL
         if (!isset($_SESSION['mot_secret'])) {
             header('Location: index.php');
             exit;
         }
 
-        /* ---- 3. ACTION : DICTIONNAIRE (ANTISÈCHE) ---- */
-        // Active le dictionnaire et annule le score final (score = 0), sans consommer d'essais
+        //3. ACTION : DICTIONNAIRE (ANTISÈCHE)
+// Active le dictionnaire et annule le score final (score = 0), sans consommer d'essais
         if (isset($_GET['action']) && $_GET['action'] === 'antiseche' && !$_SESSION['victoire']) {
             $_SESSION['antiseche_active'] = true;
-            $_SESSION['score_nul']        = true; // toutes les parties avec dictionnaire auront 0 point
+            $_SESSION['score_nul'] = true; // toutes les parties avec dictionnaire auront 0 point
 
             header('Location: index.php?page=jouer&antiseche=1');
             exit;
         }
 
-        /* ---- 4. ACTION : INDICE LETTRE ---- */
-        // Coût : +2 essais, donc -200 points. Ne s'active que s'il reste au moins 1 essai après.
+        //4. ACTION : INDICE LETTRE
+// Coût : +2 essais, donc -200 points. Ne s'active que s'il reste au moins 1 essai après.
         if (isset($_GET['action']) && $_GET['action'] === 'indice' && !$_SESSION['victoire']) {
 
             // Vérifie qu'on ne tombe pas à 0 essai (on veut garder au moins 1 tentative)
@@ -122,7 +120,7 @@ class MotusController
                 for ($i = 1; $i < strlen($mot); $i++) {
                     if (!in_array($i, $_SESSION['indices_reveles'])) {
                         $_SESSION['indices_reveles'][] = $i;
-                        $_SESSION['nb_essais']        += 2; // consomme 2 essais
+                        $_SESSION['nb_essais'] += 2; // consomme 2 essais
                         break;
                     }
                 }
@@ -135,24 +133,24 @@ class MotusController
             exit;
         }
 
-        /* ---- 5. ACTION : ABANDON ---- */
-        // Met immédiatement la partie en échec (nb_essais = max_essais)
+        //5. ACTION : ABANDON
+// Met immédiatement la partie en échec (nb_essais = max_essais)
         if (isset($_GET['action']) && $_GET['action'] === 'abandon' && !$_SESSION['victoire']) {
-            $_SESSION['victoire']  = false;
+            $_SESSION['victoire'] = false;
             $_SESSION['nb_essais'] = $_SESSION['max_essais'];
 
             header('Location: index.php?page=jouer');
             exit;
         }
 
-        /* ---- 6. ACTION : INDICE NATURE DU MOT ---- */
-        // Coût : +3 essais (−300 points), utilisable une seule fois et seulement si 1 essai restera.
+        //6. ACTION : INDICE NATURE DU MOT
+// Coût : +3 essais (−300 points), utilisable une seule fois et seulement si 1 essai restera.
         if (isset($_GET['action']) && $_GET['action'] === 'indiceType' && !$_SESSION['victoire']) {
 
             // Indice non encore utilisé ET il restera au moins 1 essai après
             if (!$_SESSION['indice_type_utilise'] && $_SESSION['nb_essais'] + 3 < $_SESSION['max_essais']) {
                 $_SESSION['indice_type_utilise'] = true;
-                $_SESSION['nb_essais']          += 3; // consomme 3 essais
+                $_SESSION['nb_essais'] += 3; // consomme 3 essais
             } else {
                 $_SESSION['flash_error'] = "Impossible : cet indice vous laisserait sans essais.";
             }
@@ -161,7 +159,7 @@ class MotusController
             exit;
         }
 
-        /* ---- 7. ACTION : EFFACER LA SAISIE CLAVIER VIRTUEL ---- */
+        //7. ACTION : EFFACER LA SAISIE CLAVIER VIRTUEL
         if (isset($_GET['action']) && $_GET['action'] === 'del' && !$_SESSION['victoire']) {
             $_SESSION['proposition_clavier'] = '';
 
@@ -169,7 +167,7 @@ class MotusController
             exit;
         }
 
-        /* ---- 8. ACTION : AJOUT LETTRE VIA CLAVIER VIRTUEL ---- */
+        //8. ACTION : AJOUT LETTRE VIA CLAVIER VIRTUEL
         if (isset($_GET['char']) && !$_SESSION['victoire']) {
 
             // Empêche de dépasser la longueur du mot secret
@@ -182,13 +180,13 @@ class MotusController
             exit;
         }
 
-        /* ---- 9. ACTION : PROPOSITION DU JOUEUR (FRAPPER) ---- */
+        //9. ACTION : PROPOSITION DU JOUEUR (FRAPPER)
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['proposition'])) {
 
             $prop = strtoupper(trim($_POST['proposition']));
 
             // On n'accepte la proposition que si elle a la bonne longueur
-            // et qu'il reste des essais
+// et qu'il reste des essais
             if (
                 strlen($prop) === strlen($_SESSION['mot_secret']) &&
                 $_SESSION['nb_essais'] < $_SESSION['max_essais']
@@ -197,8 +195,8 @@ class MotusController
                 $analyse = $this->analyserMot($prop, $_SESSION['mot_secret']);
 
                 // Ajout de cette ligne d'essai à l'historique
-                $_SESSION['essais'][]            = $analyse;
-                $_SESSION['nb_essais']          += 1; // chaque frappe consomme 1 essai
+                $_SESSION['essais'][] = $analyse;
+                $_SESSION['nb_essais'] += 1; // chaque frappe consomme 1 essai
                 $_SESSION['proposition_clavier'] = '';
 
                 // Mise à jour des états des lettres du clavier (bien/mal placé, absent)
@@ -259,25 +257,25 @@ class MotusController
             exit;
         }
 
-        /* ---- 10. AFFICHAGE DE LA VUE DU JEU ---- */
+        // 10. AFFICHAGE DE LA VUE DU JEU
         include 'vues/jeu.php';
     }
 
 
     // Compare une proposition avec le mot secret et retourne un tableau
-    // de cases : ['L' => lettre, 'statut' => 'bien-place' | 'mal-place' | 'absent']
+// de cases : ['L' => lettre, 'statut' => 'bien-place' | 'mal-place' | 'absent']
     private function analyserMot($proposition, $secret)
     {
-        $pA     = str_split($proposition);
-        $sA     = str_split($secret);
+        $pA = str_split($proposition);
+        $sA = str_split($secret);
         $taille = count($pA);
 
         // Initialisation : tout est "absent" par défaut
-        $res  = array_fill(0, $taille, ['L' => '', 'statut' => 'absent']);
+        $res = array_fill(0, $taille, ['L' => '', 'statut' => 'absent']);
         $disp = [];
 
         // 1ère passe : on marque les lettres bien placées
-        // et on compte les lettres restantes du mot secret.
+// et on compte les lettres restantes du mot secret.
         for ($i = 0; $i < $taille; $i++) {
             $lettre = $sA[$i];
             if ($pA[$i] === $lettre) {
@@ -295,7 +293,7 @@ class MotusController
             if ($res[$i]['statut'] === 'bien-place') {
                 continue;
             }
-            $lettre       = $pA[$i];
+            $lettre = $pA[$i];
             $res[$i]['L'] = $lettre;
 
             if (isset($disp[$lettre]) && $disp[$lettre] > 0) {
