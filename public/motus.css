@@ -1,114 +1,134 @@
 /* public/motus.css */
 
 body {
-    background-color: #111;
-    color: #eee;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
+  background-color: #111;
+  color: #eee;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
 }
 
 .game-container {
-    max-width: 850px;
-    margin: 0 auto;
-    padding: 30px;
-    background-color: #222;
-    border: 3px solid #ff8c00;
-    text-align: center;
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: #222;
+  border: 3px solid #ff8c00;
+  text-align: center;
 }
 
 h1 {
-    color: #ff8c00;
-    font-size: 2.5em;
-    margin-bottom: 20px;
+  color: #ff8c00;
+  font-size: 2.5em;
+  margin-bottom: 20px;
 }
-
 
 .ligne {
-    display: flex;
-    justify-content: center;
-    gap: 4px;
-    margin: 4px 0;
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin: 4px 0;
 }
 
-
 .lettre {
-    display: inline-block;
-    width: 60px;
-    height: 60px;
-    line-height: 60px;
-    border: 2px solid #555;
-    margin: 4px;
-    font-weight: bold;
-    font-size: 32px;
-    text-align: center;
-    text-transform: uppercase;
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  line-height: 60px;
+  border: 2px solid #555;
+  margin: 4px;
+  font-weight: bold;
+  font-size: 32px;
+  text-align: center;
+  text-transform: uppercase;
 }
 
 /* Couleurs Motus */
 
-.bien-place { background-color: #ff0000; color: #fff; border-color: #fff; }
-.mal-place  { background-color: #ffd700; color: #000; border-color: #000; }
-.absent     { background-color: #444;   color: #888; }
+.bien-place {
+  background-color: #ff0000;
+  color: #fff;
+  border-color: #fff;
+}
+.mal-place {
+  background-color: #ffd700;
+  color: #000;
+  border-color: #000;
+}
+.absent {
+  background-color: #444;
+  color: #888;
+}
 
 /* Formulaire */
 
 input[type="text"] {
-    width: 80%;
-    padding: 15px;
-    font-size: 24px;
-    text-transform: uppercase;
-    border: 3px solid #1e90ff; /* bleu */
-    background-color: #000;
-    color: #fff;
-    margin: 20px 0;
-    text-align: center;
+  width: 80%;
+  padding: 15px;
+  font-size: 24px;
+  text-transform: uppercase;
+  border: 3px solid #1e90ff; /* bleu */
+  background-color: #000;
+  color: #fff;
+  margin: 20px 0;
+  text-align: center;
 }
 
 /* Boutons */
 
 .btn-shinigami {
-    display: inline-block;
-    padding: 15px 30px;
-    margin: 10px;
-    background-color: #1e90ff; /* bleu principal */
-    color: #000;
-    font-weight: bold;
-    font-size: 20px;
-    cursor: pointer;
-    text-decoration: none;
-    border: none;
+  display: inline-block;
+  padding: 15px 30px;
+  margin: 10px;
+  background-color: #1e90ff; /* bleu principal */
+  color: #000;
+  font-weight: bold;
+  font-size: 20px;
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
 }
 
 .btn-shinigami:hover {
-    background-color: #ff8c00; /* hover orange */
+  background-color: #ff8c00; /* hover orange */
 }
 
 /* Clavier */
 
 .clavier {
-    margin-top: 30px;
-    padding: 10px;
+  margin-top: 30px;
+  padding: 10px;
 }
 
 .clavier-rangee {
-    margin: 10px 0;
+  margin: 10px 0;
 }
 
 .touche {
-    display: inline-block;
-    min-width: 45px;
-    padding: 15px 10px;
-    margin: 3px;
-    background-color: #1b3b5f; /* bleu foncé */
-    color: #fff;
-    font-weight: bold;
-    font-size: 20px;
-    text-decoration: none;
-    border: 1px solid #555;
+  display: inline-block;
+  min-width: 45px;
+  padding: 15px 10px;
+  margin: 3px;
+  background-color: #1b3b5f; /* bleu foncé */
+  color: #fff;
+  font-weight: bold;
+  font-size: 20px;
+  text-decoration: none;
+  border: 1px solid #555;
 }
 
-.touche:hover      { background-color: #2c5c8a; }
-.touche.bien-place { background-color: #ff0000; color: #fff; }
-.touche.mal-place  { background-color: #ffd700; color: #000; }
-.touche.absent     { background-color: #111;   color: #444; }
+.touche:hover {
+  background-color: #2c5c8a;
+}
+.touche.bien-place {
+  background-color: #ff0000;
+  color: #fff;
+}
+.touche.mal-place {
+  background-color: #ffd700;
+  color: #000;
+}
+.touche.absent {
+  background-color: #111;
+  color: #444;
+}
