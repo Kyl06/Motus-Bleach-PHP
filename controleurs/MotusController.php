@@ -58,14 +58,15 @@ class MotusController
 
             // Nombre max d'essais en fonction de difficulté
             switch ($_SESSION['niveau']) {
-                case 'simple':
-                    $_SESSION['max_essais'] = 6;
-                    break;
                 case 'moyen':
                     $_SESSION['max_essais'] = 8;
                     break;
                 case 'expert':
                     $_SESSION['max_essais'] = 10;
+                    break;
+                default:
+                case 'simple':
+                    $_SESSION['max_essais'] = 6;
                     break;
             }
 
@@ -208,14 +209,15 @@ class MotusController
 
                     // Score max selon la difficulté
                     switch ($_SESSION['niveau']) {
-                        case 'simple':
-                            $score_max = 1000;
-                            break;
                         case 'moyen':
                             $score_max = 1200;
                             break;
                         case 'expert':
                             $score_max = 1500;
+                            break;
+                        default:
+                        case 'simple':
+                            $score_max = 1000;
                             break;
                     }
 
