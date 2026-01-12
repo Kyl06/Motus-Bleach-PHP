@@ -49,6 +49,17 @@ class MotusController
 
     public function jouer()
     {
+
+        // Protection silencieuse : si on arrive ici sans avoir démarré de partie
+        if (
+            !isset($_SESSION['mot_secret']) &&
+            $_SERVER['REQUEST_METHOD'] !== 'POST' // autorise seulement la création de partie par POST
+        ) {
+            // renvoie vers l'accueil
+            header('Location: index.php');
+            exit;
+        }
+
         // Nouvelle partie
         if (isset($_POST['niveau']) && isset($_POST['pseudo'])) {
 
@@ -90,7 +101,7 @@ class MotusController
             header('Location: index.php?page=jouer');
             exit;
         }
-        
+
         // INDICE DICTIONNAIRE
         // Active le dictionnaire et annule le score final (score = 0), sans consommer d'essais
         if (isset($_GET['action']) && $_GET['action'] === 'antiseche' && !$_SESSION['victoire']) {

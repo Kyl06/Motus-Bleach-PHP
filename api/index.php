@@ -2,13 +2,13 @@
 // index.php : point d'entrée unique du jeu
 // Session pour pouvoir utiliser $_SESSION partout dans l'app
 session_start();
-require_once 'controleurs/MotusController.php';
+require_once 'controleur/MotusController.php';
 
 // instance du contrôleur
 $controller = new MotusController();
 
 // récupère la page demandée via l'URL, par défaut "accueil"
-$page = isset($_GET['page']) ? $_GET['page'] : 'accueil';
+$page = $_GET['page'] ?? 'accueil';
 
 // routage en fonction du paramètre "page" pour méthode du contrôleur
 switch ($page) {

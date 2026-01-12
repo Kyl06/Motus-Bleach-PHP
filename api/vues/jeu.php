@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+
 <head>
     <meta charset="UTF-8" />
     <title>Combat - Motus Bleach</title>
@@ -142,9 +143,11 @@
                 </a>
                 <!-- abandon immédiat de la partie -->
                 <a href="index.php?page=jouer&amp;action=abandon" class="btn-shinigami"
-                    style="background:#900; text-decoration:none">
+                    style="background:#900; text-decoration:none"
+                    onclick="return confirm('Êtes-vous sûr de vouloir abandonner la partie ?');">
                     ABANDONNER
                 </a>
+
             </form>
 
             <!-- clavier virtuel pour entrer le mot via des liens au lieu du clavier physique -->

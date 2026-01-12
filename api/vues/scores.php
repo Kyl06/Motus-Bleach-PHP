@@ -39,7 +39,7 @@
                         <!-- niveau en majuscules -->
                         <td><?= htmlspecialchars(strtoupper($s['niveau'])) ?></td>
                         <!-- date de la partie -->
-                        <td><?= htmlspecialchars($s['date']) ?></td>
+                        <td><?= date('d/m/Y H:i', strtotime($s['date_partie'])) ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
